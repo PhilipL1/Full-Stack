@@ -1,5 +1,3 @@
-var Comments = require("./Comments");
-
 module.exports = (sequelize, DataTypes) => {
   const Posts = sequelize.define("Posts", {
     title: {
@@ -20,6 +18,9 @@ module.exports = (sequelize, DataTypes) => {
     Posts.hasMany(models.Comments, {
       // 1:N relationship
       onDelete: "cascade", //delete a post >> all comments associated with that post will be deleted aswell
+    });
+    Posts.hasMany(models.Likes, {
+      onDelete: "cascade",
     });
   };
 

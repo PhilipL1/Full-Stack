@@ -132,6 +132,15 @@ span {
   cursor: pointer;
 }
 
+.navbar .loggedInContainer {
+  flex: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color: white;
+}
+
 /* INDIVIDUAL POST */
 .postPage {
   display: flex;

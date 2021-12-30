@@ -36,7 +36,7 @@ router.post("/login", async (req, res) => {
       { username: user.username, id: user.id }, //from database
       "importantsecret" //random Strings as your secret token
     );
-    res.json(accessToken);
+    res.json({ token: accessToken, username: username, id: user.id });
     // console.log(`answer >>> ` + match);
   });
 });
