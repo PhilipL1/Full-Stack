@@ -1,17 +1,34 @@
-import React from "react";
+import React, { useContext } from "react";
 import axios from "axios";
 import { useEffect, useState } from "react"; //run once when you refresh the page
 import { useNavigate } from "react-router-dom";
 import "../App.css";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import { AuthContext } from "../helpers/AuthContext";
+
 function Home() {
   const [listOfPosts, setListOfPosts] = useState([]);
+  const [likedPost, setLikedPost] = useState([]);
+  const { authState } = useContext(AuthContext);
   let navigate = useNavigate(); //navigate.push >> want to change from one route to another route
 
   useEffect(() => {
-    axios.get("http://localhost:3001/posts").then((response) => {
-      setListOfPosts(response.data);
-    });
+    if (!localStorage.getItem("accessToken")) {
+      navigate("/login");
+    } else {
+      axios
+        .get("http://localhost:3001/posts", {
+          headers: { accessToken: localStorage.getItem("accessToken") },
+        })
+        .then((response) => {
+          setListOfPosts(response.data.listOfPosts);
+          setLikedPost(
+            response.data.likedPosts.map((like) => {
+              return like.PostId;
+            })
+          );
+        });
+    }
   }, []);
 
   const likeAPost = (postId) => {
@@ -37,6 +54,15 @@ function Home() {
             }
           })
         );
+        if (likedPost.includes(postId)) {
+          setLikedPost(
+            likedPost.filter((id) => {
+              return id !== postId;
+            })
+          );
+        } else {
+          setLikedPost([...likedPost, postId]);
+        }
       });
   };
 
@@ -61,7 +87,9 @@ function Home() {
                   onClick={() => {
                     likeAPost(value.id);
                   }}
-                  className="likeBttn"
+                  className={
+                    likedPost.includes(value.id) ? "unlikeBttn" : "likeBttn"
+                  }
                 />
                 <label>{value.Likes.length}</label>
               </div>
