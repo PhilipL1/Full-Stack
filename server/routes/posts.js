@@ -16,10 +16,31 @@ router.get("/byId/:id", async (req, res) => {
   res.json(post);
 });
 
-router.post("/", async (req, res) => {
+router.get("/byUserId/:id", async (req, res) => {
+  const userId = req.params.id;
+  const listOfPost = await Posts.findAll({
+    where: { UserId: userId },
+    include: [Likes],
+  });
+  res.json(listOfPost);
+});
+
+router.post("/", validateToken, async (req, res) => {
   const post = req.body;
+  post.username = req.user.username;
+  post.UserId = req.user.id;
   await Posts.create(post);
   res.json(post);
+});
+
+router.delete("/:id", validateToken, async (req, res) => {
+  const postId = req.params.id;
+  await Posts.destroy({
+    where: {
+      id: postId,
+    },
+  });
+  res.json("deleted successfully");
 });
 
 module.exports = router;

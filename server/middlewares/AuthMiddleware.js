@@ -6,7 +6,10 @@ const { verify } = require("jsonwebtoken"); //verify if correct
 const validateToken = (req, res, next) => {
   const accessToken = req.header("accessToken"); // Front End to Backedn store in header rather than using cookies
 
-  if (!accessToken) return res.json({ error: "User not logged in!" }); //check if user has a token
+  if (!accessToken) {
+    return;
+    res.json({ error: "User not logged in!" }); //check if user has a token
+  }
 
   try {
     const validToken = verify(accessToken, "importantsecret"); //check if the token is real by comparing accessToken from req to secrets from when creating the token

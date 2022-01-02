@@ -1,5 +1,3 @@
-var Comments = require("./Comments");
-
 module.exports = (sequelize, DataTypes) => {
   const Users = sequelize.define("Users", {
     username: {
@@ -17,8 +15,11 @@ module.exports = (sequelize, DataTypes) => {
       // 1:N relationship
       onDelete: "cascade",
     });
-  };
 
+    Users.hasMany(models.Posts, {
+      onDelete: "cascade",
+    });
+  };
   // 1:N relationship
   // Users.associate = (models) => {
   //   Users.hasMany(models.Posts, {

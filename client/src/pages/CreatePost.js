@@ -11,16 +11,21 @@ function CreatePost() {
   const initialValues = {
     title: "",
     postText: "",
-    username: "",
   };
   const onSubmit = (data) => {
-    axios.post("http://localhost:3001/posts", data).then((response) => {
-      navigate("/");
-    });
+    axios
+      .post("http://localhost:3001/posts", data, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then((response) => {
+        navigate("/");
+      });
   };
 
   useEffect(() => {
-    if (!authState.status) {
+    if (!localStorage.getItem("accessToken")) {
       navigate("/login");
     }
   }, []);
@@ -28,7 +33,6 @@ function CreatePost() {
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Put a Bloodclart Title!!"),
     postText: Yup.string().required(),
-    username: Yup.string().min(3).max(15).required(),
   });
 
   return (
@@ -52,13 +56,6 @@ function CreatePost() {
             id="inputCreatePost"
             name="postText"
             placeholder="Ex. Post... "
-          />
-          <label> Username: </label>
-          <ErrorMessage name="username" component="span" />
-          <Field
-            id="inputCreatePost"
-            name="username"
-            placeholder="Ex. Username... "
           />
           <button type="submit"> Create Post</button>
         </Form>

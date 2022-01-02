@@ -45,4 +45,12 @@ router.get("/validate", validateToken, (req, res) => {
   res.json(req.user);
 });
 
+router.get("/basicInfo/:id", async (req, res) => {
+  const userId = req.params.id;
+  const basicInfo = await Users.findByPk(userId, {
+    attributes: { exclude: ["password"] },
+  });
+  res.json(basicInfo);
+});
+
 module.exports = router;
