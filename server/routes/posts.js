@@ -33,6 +33,18 @@ router.post("/", validateToken, async (req, res) => {
   res.json(post);
 });
 
+router.put("/postTitle", validateToken, async (req, res) => {
+  const { newTitles, id } = req.body;
+  await Posts.update({ title: newTitles }, { where: { id: id } }); //{what fields you want to update} {which post i am talking about }
+  res.json(newTitles);
+});
+
+router.put("/postText", validateToken, async (req, res) => {
+  const { newTexts, id } = req.body;
+  await Posts.update({ postText: newTexts }, { where: { id: id } }); //{what fields you want to update} {which post i am talking about }
+  res.json(newTexts);
+});
+
 router.delete("/:id", validateToken, async (req, res) => {
   const postId = req.params.id;
   await Posts.destroy({
