@@ -5,6 +5,7 @@ import Post from "./pages/Post";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
+import ChangePassword from "./pages/ChangePassword";
 import Profile from "./pages/Profile";
 import { AuthContext } from "./helpers/AuthContext";
 import { useState, useEffect } from "react";
@@ -79,6 +80,7 @@ function App() {
             <Route path="/signUp" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile/:id" element={<Profile />} />
+            <Route path="/changePassword" element={<ChangePassword />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </Router>
